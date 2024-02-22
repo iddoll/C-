@@ -1,0 +1,25 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int[] numbers = { 5, 2, 8, 1, 7, 13, 3, 55, 19};
+
+        // Виклик методу розширення для сортування по спаданню
+        numbers.SortDescending();
+
+        // Вивід відсортованого масиву
+        Console.Write(string.Join(", ", numbers));
+    }
+}
+
+public static class ArrayExtensions
+{
+    public static void SortDescending(this int[] numbers)
+    {
+        Array.Sort(numbers);
+        Array.Reverse(numbers);
+    }
+}
+
