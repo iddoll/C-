@@ -1,0 +1,117 @@
+using System;
+
+public class TechCompany
+{
+    string Name;
+    int NumberOfProducts;
+    double AnnualSalesVolume;
+    public double MarketShare;
+
+    static int CompanyCount;//2.1. Створити клас відповідно до варіанту.Клас також повинен містить статичне поле, для підрахунку кількості об’єктів.
+
+    public TechCompany(string name, int numberOfProducts, double annualSalesVolume, double marketShare)
+    {
+        Name = name;
+        NumberOfProducts = numberOfProducts;
+        AnnualSalesVolume = annualSalesVolume;
+        MarketShare = marketShare;
+        CompanyCount++;
+    }
+
+    public static int GetCompanyCount()//2.1 Метод для підрахунку кількості обєктів
+    {
+        return CompanyCount;
+    }
+
+    public override string ToString()
+    {
+        return $"{Name,-12} Кількість продуктів: {NumberOfProducts,-5} Річний об'єм продажу: {AnnualSalesVolume, -15} Частина ринку: {MarketShare}%";
+    }
+
+    /*2.4. Знайти об’єкти, які відповідають певному критерію. Критерій підібрати самостійно відповідно до варіанту.
+    компанії кількість продуктів яких є мінімальною.*/
+    public static TechCompany[] FindCompaniesWithTheMinCountOfProduct(TechCompany[] companies)
+    {
+        int minNumberOfProducts = companies.Min(comp => comp.NumberOfProducts);
+        return Array.FindAll(companies, comp => comp.NumberOfProducts == minNumberOfProducts);
+    }
+
+    public static TechCompany[] FindCompaniesWithTheMaxCountOfProduct(TechCompany[] companies)
+    {
+        int maxNumberOfProducts = companies.Max(comp => comp.NumberOfProducts);
+        return Array.FindAll(companies, comp => comp.NumberOfProducts == maxNumberOfProducts);
+    }
+}
+
+class Program
+{
+
+    static void Main()
+    {
+        //читання та вивід "і"
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.InputEncoding = System.Text.Encoding.UTF8;
+
+
+
+        //2.2. Створити масив об’єктів відповідного типу. Можна даний масив оформити у вигляді окремого класу.
+        TechCompany[] companies = new TechCompany[]
+        {
+            //2.3. Створити декілька об’єктів відповідного класу (не менше 10), і записати їх в масив. 
+            new TechCompany("Oracle", 1, 2500000000, 31.01),
+            new TechCompany("IBM", 3, 2400000000, 29.25),
+            new TechCompany("Microsoft", 2, 1000000000, 13.01),
+            new TechCompany("Google", 5, 3000000000, 20.5),
+            new TechCompany("Apple", 4, 2000000000, 15.75),
+            new TechCompany("Amazon", 6, 1800000000, 18.9),
+            new TechCompany("Facebook", 2, 1200000000, 10.8),
+            new TechCompany("Intel", 3, 800000000, 8.2),
+            new TechCompany("Samsung", 4, 1500000000, 12.3),  
+            new TechCompany("Tesla", 1, 900000000, 6.5)
+        };
+
+        // Виведення всіх компаній
+        foreach (var company in companies)
+        {
+            Console.WriteLine(company.ToString());
+        }
+
+        Console.WriteLine($"Загальна кількість компаній: {TechCompany.GetCompanyCount()}");
+
+
+
+        // 2.4 Знаходження компаній, які відповідають критерію 
+        TechCompany[] minProductCompanies = TechCompany.FindCompaniesWithTheMinCountOfProduct(companies);
+
+        Console.WriteLine("\nКомпаннії з мінімальною кількістю продуктів:");
+        foreach (var company in minProductCompanies)
+        {
+            Console.WriteLine(company.ToString());
+        }
+
+        TechCompany[] maxProductCompanies = TechCompany.FindCompaniesWithTheMaxCountOfProduct(companies);
+
+        Console.WriteLine("\nКомпаннії з максимальною кількістю продуктів:");
+        foreach (var company in maxProductCompanies)
+        {
+            Console.WriteLine(company.ToString());
+        }
+
+
+
+        // 2.5 Перевірка кількості існуючих об'єктів
+        const int upperLimit = 15;
+        const int lowerLimit = 5;
+
+        if (TechCompany.GetCompanyCount() > upperLimit)
+        {
+            Console.WriteLine($"The total company count exceeds {upperLimit}.");
+        }
+        else if (TechCompany.GetCompanyCount() < lowerLimit)
+        {
+            Console.WriteLine($"The total company count is less than {lowerLimit}.");
+        }
+
+        Console.ReadLine();
+    }
+}
