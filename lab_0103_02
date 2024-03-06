@@ -1,0 +1,111 @@
+
+class User
+{
+    protected string name;
+    protected int age;
+
+    public void setName(string Name)
+    {
+        name = Name;
+    }
+
+    public string getName()
+    {
+        return name;
+    }
+    public void setAge(int Age)
+    {
+        age = Age;
+    }
+    public int getAge()
+    {
+        return age;
+    }
+}
+
+class Worker : User
+{
+    private int salary;
+
+    public void setSalary(int Salary)
+    {
+        salary = Salary;
+    }
+
+    public int getSalary()
+    {
+        return salary;
+    }
+}
+class Student : User
+{
+    private int stupendia;
+    private int course;
+
+    public void setScholarship(int Stupendia)
+    {
+        stupendia = Stupendia;
+    }
+
+    public int getScholarship()
+    {
+        return stupendia;
+    }
+
+    public void setCourse(int Cource)
+    {
+        course = Cource;
+    }
+
+    public int getCourse()
+    {
+        return course;
+    }
+}
+
+class Driver : Worker
+{
+    private int drivingExperience;
+    private string drivingCategory;
+
+    public void setDrivingExperience(int experience)
+    {
+        drivingExperience = experience;
+    }
+
+    public int getDrivingExperience()
+    {
+        return drivingExperience;
+    }
+
+    public void setDrivingCategory(string category)
+    {
+        drivingCategory = category;
+    }
+
+    public string getDrivingCategory()
+    {
+        return drivingCategory;
+    }
+}
+
+
+class Program
+{
+    static void Main()
+    {
+        Worker Ivan = new Worker();
+        Ivan.setName("Іван");
+        Ivan.setAge(25);
+        Ivan.setSalary(1000);
+
+        Worker Vasia = new Worker();
+        Vasia.setName("Вася");
+        Vasia.setAge(26);
+        Vasia.setSalary(2000);
+
+        
+        int totalSalary = Ivan.getSalary() + Vasia.getSalary();
+        Console.WriteLine("Сума зарплат Iвана та Васi: " + totalSalary);
+    }
+}
