@@ -1,0 +1,100 @@
+class Date
+{
+    public int day;
+    public int month;
+    public int year;
+
+    public Date()
+    {
+        // Конструктор за замовчуванням
+        day = 12;
+        month = 12;
+        year = 2012;
+        
+    }
+
+    public Date(int d, int m, int y)
+    {
+        day = d;
+        month = m;
+        year = y;
+    }
+    
+    //Функція обробки даних 1
+    public void IncreaseYear()
+    {
+        year += 1;
+    }
+
+
+    //Функція обробки даних 2
+    public void DecreaseDay()
+    {
+        // Створюємо нову дату
+        DateTime currentDate = new DateTime(year, month, day);
+
+        // Зменшуємо дату на 2 дні
+        currentDate = currentDate.AddDays(-2);
+
+        // Оновлюємо значення дня, місяця і року
+        day = currentDate.Day;
+        month = currentDate.Month;
+        year = currentDate.Year;
+    }
+
+    //Функція формування рядка інформації про об'єкт
+    public string GetDateInfo()
+    {
+        return $"{day:D2}.{month:D2}.{year:D4}";
+    }
+}
+
+class Employee : Date
+{
+    private string fullName;
+    private Date hireDate;
+
+
+    //Конструктор
+    public Employee(string name, Date hireDate)
+    {
+        fullName = name;
+        this.hireDate = hireDate;
+    }
+
+    //Функція обробки даних, зазначену в індивідуальному завданні
+    public int YearsOfWork()
+    {
+        return DateTime.Now.Year - hireDate.year;
+    }
+
+    //Функція формування рядка інформації про об'єкт
+    public string GetEmployeeInfo()
+    {
+        return $"Працiвник: {fullName}, Дата приходу на роботу: {hireDate.GetDateInfo()}, Кiлькiсть рокiв працi на роботi: {YearsOfWork()}";
+    }
+}
+
+
+
+class Program
+{
+    static void Main()
+    {
+        // Демонстрація роботи класу Date
+        Date sampleDate = new Date(2, 2, 2024);
+        Console.WriteLine($"Початкова дата: {sampleDate.GetDateInfo()}");
+
+        sampleDate.IncreaseYear();
+        Console.WriteLine($"Дата збiльшена на один рiк: {sampleDate.GetDateInfo()}");
+
+        sampleDate.DecreaseDay();
+        Console.WriteLine($"Дата зменшена на два днi: {sampleDate.GetDateInfo()}");
+
+        // Демонстрація роботи класу Employee
+        Employee employee = new Employee("Бiлоус Iлля", new Date(5, 10, 2010));
+        Console.WriteLine(employee.GetEmployeeInfo());
+
+        
+    }
+}
