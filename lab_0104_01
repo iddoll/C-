@@ -1,0 +1,122 @@
+using System;
+
+// Клас, що представляє колесо
+public class Wheel
+{
+    public string BrandW { get; set; }
+
+    public Wheel(string brand)
+    {
+        BrandW = brand;
+    }
+
+    // Перевизначення методу ToString()
+    public override string ToString()
+    {
+        return $"Колесо: {BrandW}";
+    }
+}
+
+// Клас, що представляє двигун
+public class Engine
+{
+    public string BrandE { get; set; }
+
+    public Engine(string brand)
+    {
+        BrandE = brand;
+    }
+
+    // Перевизначення методу ToString()
+    public override string ToString()
+    {
+        return $"Двигун: {BrandE}";
+    }
+}
+
+// Базовий клас для автомобіля
+public class Car
+{
+    public string BrandC { get; set; }
+    public Engine CarEngine { get; set; }
+    public Wheel[] Wheels { get; set; }
+
+    public Car(string brand, Engine engine, Wheel[] wheels)
+    {
+        BrandC = brand;
+        CarEngine = engine;
+        Wheels = wheels;
+    }
+
+    // Метод їхати
+    public void Drive()
+    {
+        Console.WriteLine("Автомобіль їде.");
+    }
+
+    // Метод заправлятися
+    public void Refuel()
+    {
+        Console.WriteLine("Автомобіль заправляється.");
+    }
+
+    // Метод міняти колесо
+    public void ChangeWheel(Wheel newWheel, int wheelIndex)
+    {
+        if (wheelIndex >= 0 && wheelIndex < Wheels.Length)
+        {
+            Wheels[wheelIndex] = newWheel;
+            Console.WriteLine($"Колесо під індексом {wheelIndex} було замінене.");
+        }
+        else
+        {
+            Console.WriteLine("Недійсний індекс колеса.");
+        }
+    }
+
+    // Перевизначення методу ToString()
+    public override string ToString()
+    {
+        return $"Автомобіль: {BrandC}, {CarEngine}, Колеса: {string.Join(", ", Wheels.Select(w => w.ToString()))}";
+    }
+
+    // Перевизначення методу Equals()
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        Car otherCar = (Car)obj;
+        return BrandC == otherCar.BrandC && CarEngine.Equals(otherCar.CarEngine) && Array.Equals(Wheels, otherCar.Wheels);
+    }
+
+    // Перевизначення методу GetHashCode()
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(BrandC, CarEngine, Wheels);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        // Приклад використання
+        Wheel[] wheels = { new Wheel("Initial"), new Wheel("Initial"), new Wheel("Initial"), new Wheel("Initial") };
+        Engine engine = new Engine("V8");
+        Car myCar = new Car("Toyota", engine, wheels);
+
+        Console.WriteLine(myCar.ToString());
+
+        myCar.Drive();
+        myCar.Refuel();
+
+        myCar.ChangeWheel(new Wheel("Changed"), 2);
+
+        Console.WriteLine(myCar.ToString());
+    }
+}
