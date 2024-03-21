@@ -1,0 +1,138 @@
+using System;
+
+public abstract class TNumber
+{
+    public abstract int SumOfDigits();
+    public abstract int FirstDigit();
+    public abstract int LastDigit();
+    public abstract void PrintInfo();
+}
+
+public class TIntNumber : TNumber
+{
+    private int intValue;
+
+    public TIntNumber(int value)
+    {
+        intValue = value;
+    }
+
+    public override int SumOfDigits()
+    {
+        int sum = 0;
+        int tempValue = Math.Abs(intValue);
+
+        while (tempValue > 0)
+        {
+            sum += tempValue % 10;
+            tempValue /= 10;
+        }
+
+        return sum;
+    }
+
+    public override int FirstDigit()
+    {
+        int tempValue = Math.Abs(intValue);
+
+        while (tempValue >= 10)
+        {
+            tempValue /= 10;
+        }
+
+        return tempValue;
+    }
+
+    public override int LastDigit()
+    {
+        return Math.Abs(intValue) % 10;
+    }
+
+    public override void PrintInfo()
+    {
+        Console.WriteLine($"Ціле число: {intValue}");
+    }
+}
+
+public class TRealNumber : TNumber
+{
+    private double realValue;
+
+    public TRealNumber(double value)
+    {
+        realValue = value;
+    }
+
+    public override int SumOfDigits()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int FirstDigit()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int LastDigit()
+    {
+        // Отримуємо останню цифру з допомогою рядка
+        string stringValue = realValue.ToString();
+        char lastChar = stringValue[stringValue.Length - 1];
+        // Переводимо останню цифру з символу у цифру
+        return int.Parse(lastChar.ToString());
+    }
+
+    public override void PrintInfo()
+    {
+        Console.WriteLine($"Дійсне число: {realValue}");
+    }
+}
+
+
+
+
+class Program
+{
+    static void Main()
+    {
+        Random random = new Random();
+        int m = 5; // кількість об'єктів цілих чисел
+        int n = 5; // кількість об'єктів дійсних чисел
+
+        TNumber[] numbers = new TNumber[m + n];
+
+        Console.WriteLine("Згенеровані цілі числа:");
+        for (int i = 0; i < m; i++)
+        {
+            int randomInt = random.Next(1000);
+            numbers[i] = new TIntNumber(randomInt);
+            numbers[i].PrintInfo();
+        }
+
+        Console.WriteLine("\nЗгенеровані дійсні числа:");
+        for (int i = m; i < m + n; i++)
+        {
+            double randomReal = random.NextDouble() * 100;
+            numbers[i] = new TRealNumber(randomReal);
+            numbers[i].PrintInfo();
+        }
+
+        int sumOfFirstDigits = 0;
+        int sumOfLastDigits = 0;
+
+        foreach (TNumber number in numbers)
+        {
+            if (number is TIntNumber)
+            {
+                sumOfFirstDigits += number.FirstDigit();
+            }
+            else if (number is TRealNumber)
+            {
+                sumOfLastDigits += number.LastDigit();
+            }
+        }
+
+        Console.WriteLine($"\nСума перших цифр цілих чисел: {sumOfFirstDigits}");
+        Console.WriteLine($"Сума останніх цифр дійсних чисел: {sumOfLastDigits}");
+    }
+}
