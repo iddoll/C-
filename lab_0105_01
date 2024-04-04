@@ -1,0 +1,105 @@
+using System;
+
+// Інтерфейс для геометричних фігур
+public interface IFigure
+{
+    void PrintType(); // метод, що виводить на екран тип фігури
+    void PrintArea(); // метод, що виводить на екран площу фігури
+    double FirstDimension { get; set; } // властивість, що відповідає за перший лінійний розмір фігури
+    double SecondDimension { get; set; } // властивість, що відповідає за другий лінійний розмір фігури
+    void PrintDiagonalLength(); // метод, що виводить на екран довжину діагоналі фігури
+}
+
+// Інтерфейс для кольорових фігур
+public interface IColoredFigure : IFigure
+{
+    string Color { get; set; } // властивість, що відповідає за колір фігури
+    void PrintColor(); // метод, що виводить на екран колір фігури
+}
+
+// Клас прямокутника
+public class Rectangle : IFigure
+{
+    public double FirstDimension { get; set; }
+    public double SecondDimension { get; set; }
+
+    public void PrintType()
+    {
+        Console.WriteLine("Rectangle");
+    }
+
+    public void PrintArea()
+    {
+        Console.WriteLine($"Area: {FirstDimension * SecondDimension}");
+    }
+
+    public void PrintDiagonalLength()
+    {
+        Console.WriteLine($"Diagonal Length: {Math.Sqrt(FirstDimension * FirstDimension + SecondDimension * SecondDimension)}");
+    }
+}
+
+// Клас кольорового прямокутника
+public class ColoredRectangle : IColoredFigure
+{
+    public double FirstDimension { get; set; }
+    public double SecondDimension { get; set; }
+    public string Color { get; set; }
+
+    public void PrintType()
+    {
+        Console.WriteLine("Colored Rectangle");
+    }
+
+    public void PrintArea()
+    {
+        Console.WriteLine($"Area: {FirstDimension * SecondDimension}");
+    }
+
+    public void PrintDiagonalLength()
+    {
+        Console.WriteLine($"Diagonal Length: {Math.Sqrt(FirstDimension * FirstDimension + SecondDimension * SecondDimension)}");
+    }
+
+    public void PrintColor()
+    {
+        Console.WriteLine($"Color: {Color}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створення екземплярів кожного класу
+        IFigure[] figures = new IFigure[]
+        {
+            new Rectangle { FirstDimension = 5, SecondDimension = 4 },
+            new Rectangle { FirstDimension = 3, SecondDimension = 6 },
+            new Rectangle { FirstDimension = 7, SecondDimension = 2 },
+            new ColoredRectangle { FirstDimension = 4, SecondDimension = 8, Color = "Red" },
+            new ColoredRectangle { FirstDimension = 6, SecondDimension = 5, Color = "Blue" },
+            new ColoredRectangle { FirstDimension = 3, SecondDimension = 9, Color = "Green" }
+        };
+
+        // Метод для вибору елементів, які підтримують колір
+        void PrintColoredFigures(IFigure[] array)
+        {
+            foreach (var figure in array)
+            {
+                if (figure is IColoredFigure coloredFigure)
+                {
+                    coloredFigure.PrintType();
+                    coloredFigure.PrintArea();
+                    coloredFigure.PrintDiagonalLength();
+                    coloredFigure.PrintColor();
+                    Console.WriteLine();
+                }
+            }
+        }
+
+        // Виклик методу для вибору елементів, які підтримують колір
+        Console.WriteLine("Colored figures:");
+        PrintColoredFigures(figures);
+    }
+}
