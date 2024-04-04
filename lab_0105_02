@@ -1,0 +1,67 @@
+using System;
+
+// Інтерфейс Інструмент
+interface IInstrument
+{
+    void Play(); // Метод для відтворення звуку інструменту
+    string Key { get; } // Властивість, що повертає ноту (ключ) для інструменту
+}
+
+// Клас Гітара, реалізує Інструмент
+class Guitar : IInstrument
+{
+    public int NumberOfStrings { get; set; } // Кількість струн на гітарі
+
+    public string Key => "До мажор"; // Ключ для гітари - завжди "До мажор"
+
+    public void Play() // Реалізація методу Play() для гітари
+    {
+        Console.WriteLine($"Грає гітара з {NumberOfStrings} струнами");
+    }
+}
+
+// Клас Барабан, реалізує Інструмент
+class Drum : IInstrument
+{
+    public int Size { get; set; } // Розмір барабану
+
+    public string Key => "До мажор"; // Ключ для барабану - завжди "До мажор"
+
+    public void Play() // Реалізація методу Play() для барабану
+    {
+        Console.WriteLine($"Грає барабан розміром {Size}");
+    }
+}
+
+// Клас Труба, реалізує Інструмент
+class Trumpet : IInstrument
+{
+    public int Diameter { get; set; } // Діаметр труби
+
+    public string Key => "До мажор"; // Ключ для труби - завжди "До мажор"
+
+    public void Play() // Реалізація методу Play() для труби
+    {
+        Console.WriteLine($"Грає труба з діаметром {Diameter}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створення масиву типу Інструмент, що містить різні інструменти
+        IInstrument[] instruments = new IInstrument[]
+        {
+            new Guitar { NumberOfStrings = 6 }, // Гітара з 6 струнами
+            new Drum { Size = 22 }, // Барабан розміром 22 дюйми
+            new Trumpet { Diameter = 3 } // Труба з діаметром 3 дюйми
+        };
+
+        // Виклик методу Play() для кожного інструменту в масиві
+        foreach (var instrument in instruments)
+        {
+            instrument.Play(); // Відтворення звуку кожного інструменту
+        }
+    }
+}
