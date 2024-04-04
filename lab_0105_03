@@ -1,0 +1,179 @@
+using System;
+
+// Клас Shop
+class Shop
+{
+    private string[] clothingSizes; // Масив розмірів одягу
+    private int[] euroSizes; // Числові значення euroSize, відповідні кожному розміру
+
+    public Shop()
+    {
+        // Ініціалізація масивів з розмірами одягу та числовими значеннями euroSize
+        clothingSizes = new string[] { "XXS", "XS", "S", "M", "L" };
+        euroSizes = new int[] { 32, 34, 36, 38, 40 };
+    }
+
+    // Метод getDescription, який повертає рядок "Дорослий розмір"
+    public string getDescription()
+    {
+        return "Дорослий розмір";
+    }
+
+    // Перевизначення методу getDescription для розміру XXS
+    public string getDescription(string size)
+    {
+        if (size == "XXS")
+        {
+            return "Дитячий розмір";
+        }
+        else
+        {
+            return getDescription();
+        }
+    }
+}
+
+// Інтерфейс "Чоловічий Одяг"
+interface IMensClothing
+{
+    void DressMan();
+}
+
+// Інтерфейс "Жіночий Одяг"
+interface IWomensClothing
+{
+    void DressWoman();
+}
+
+// Абстрактний клас "Одяг"
+abstract class Clothing
+{
+    protected string size;
+    protected double cost;
+    protected string color;
+
+    public Clothing(string size, double cost, string color)
+    {
+        this.size = size;
+        this.cost = cost;
+        this.color = color;
+    }
+}
+
+// Клас Футболка
+class TShirt : Clothing, IMensClothing, IWomensClothing
+{
+    public TShirt(string size, double cost, string color) : base(size, cost, color) { }
+
+    public void DressMan()
+    {
+        Console.WriteLine($"Чоловіча футболка: Розмір {size}, Колір {color}, Ціна {cost}");
+    }
+
+    public void DressWoman()
+    {
+        Console.WriteLine($"Жіноча футболка: Розмір {size}, Колір {color}, Ціна {cost}");
+    }
+}
+
+// Клас Штани
+class Pants : Clothing, IMensClothing, IWomensClothing
+{
+    public Pants(string size, double cost, string color) : base(size, cost, color) { }
+
+    public void DressMan()
+    {
+        Console.WriteLine($"Чоловічі штани: Розмір {size}, Колір {color}, Ціна {cost}");
+    }
+
+    public void DressWoman()
+    {
+        Console.WriteLine($"Жіночі штани: Розміо {size}, Колір {color}, Ціна {cost}");
+    }
+}
+
+// Клас Спідниця
+class Skirt : Clothing, IWomensClothing
+{
+    public Skirt(string size, double cost, string color) : base(size, cost, color) { }
+
+    public void DressWoman()
+    {
+        Console.WriteLine($"Спідниця: Розмір {size}, Колір {color}, Ціна {cost}");
+    }
+}
+
+// Клас Краватка
+class Tie : Clothing, IMensClothing
+{
+    public Tie(string size, double cost, string color) : base(size, cost, color) { }
+
+    public void DressMan()
+    {
+        Console.WriteLine($"Краватка: Розмір {size}, Колір {color}, Ціна {cost}");
+    }
+}
+
+// Клас Ательє
+class Atelier
+{
+    public void DressWoman(Clothing[] clothes)
+    {
+        Console.WriteLine("Одягаємо жінку:");
+        foreach (var clothing in clothes)
+        {
+            if (clothing is IWomensClothing)
+            {
+                ((IWomensClothing)clothing).DressWoman();
+            }
+        }
+    }
+
+    public void DressMan(Clothing[] clothes)
+    {
+        Console.WriteLine("Одягаємо чоловіка:");
+        foreach (var clothing in clothes)
+        {
+            if (clothing is IMensClothing)
+            {
+                ((IMensClothing)clothing).DressMan();
+            }
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створення масиву з різним одягом
+        Clothing[] clothes = new Clothing[]
+        {
+            new TShirt("L", 20.0, "Red"),
+            new Pants("M", 30.0, "Blue"),
+            new Skirt("S", 25.0, "Black"),
+            new Tie("L", 15.0, "Green")
+        };
+
+        // Створення ательє
+        Atelier atelier = new Atelier();
+
+        // Одягнення чоловіка
+        atelier.DressMan(clothes);
+
+        // Одягнення жінки
+        atelier.DressWoman(clothes);
+
+        // Створення об'єкту класу Shop
+        Shop shop = new Shop();
+
+        // Виклик методу getDescription без параметрів
+        string adultDescription = shop.getDescription();
+        Console.WriteLine("Розмір без параметрів: " + adultDescription);
+
+        // Виклик методу getDescription з параметром "XXS"
+        string childDescription = shop.getDescription("XXS");
+        Console.WriteLine("Розмір з параметром XXS: " + childDescription);
+
+    }
+}
