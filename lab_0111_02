@@ -1,0 +1,34 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введіть рік:");
+        int year = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Введіть місяць (у числовому форматі):");
+        int month = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Введіть день:");
+        int day = int.Parse(Console.ReadLine());
+
+        DateTime targetDate = new DateTime(year, month, day);
+        DateTime currentDate = DateTime.Now.Date;
+
+        if (targetDate < currentDate)
+        {
+            Console.WriteLine("Ця дата вже минула.");
+        }
+        else if (targetDate == currentDate)
+        {
+            Console.WriteLine("Ця дата сьогодні.");
+        }    
+        else
+        {
+            TimeSpan remainingTime = targetDate - currentDate;
+            int remainingDays = (int)remainingTime.TotalDays;
+            Console.WriteLine($"До вказаної дати залишилося {remainingDays} днів.");
+        }
+    }
+}
