@@ -1,0 +1,34 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Введіть рядок з трьома різними датами, розділеними комою (наприклад, '01.12.2022,01.02.2022,01.03.2022'):");
+        string input = Console.ReadLine();
+
+        string[] dateStrings = input.Split(',');
+
+        // Знаходження року з найменшим номером
+        int minYear = dateStrings.Select(s => int.Parse(s.Split('.')[2])).Min();
+        Console.WriteLine($"Рік з найменшим номером: {minYear}");
+
+        // Знаходження всіх весняних дат
+        Console.WriteLine("Весняні дати:");
+        foreach (string dateString in dateStrings)
+        {
+            int[] dateParts = dateString.Split('.').Select(int.Parse).ToArray();
+            int month = dateParts[1];
+
+            if (month >= 3 && month <= 5)
+            {
+                Console.WriteLine(dateString);
+            }
+        }
+
+        // Знаходження самої пізньої дати
+        string latestDate = dateStrings.OrderByDescending(s => DateTime.ParseExact(s, "dd.MM.yyyy", null)).First();
+        Console.WriteLine($"Сама пізня дата: {latestDate}");
+    }
+}
