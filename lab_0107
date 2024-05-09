@@ -1,0 +1,148 @@
+using System;
+
+// Клас банк
+public class Bank
+{
+    public string Nazva { get; set; } 
+
+    // Конструктор
+    public Bank(string nazva)
+    {
+        Nazva = nazva; 
+    }
+}
+
+// Клас філія
+public class Filia
+{
+    public string Nazva { get; set; } 
+    public double ZagalnaSumaVkladiv { get; set; } 
+
+    // Конструктор
+    public Filia(string nazva)
+    {
+        Nazva = nazva; 
+    }
+}
+
+// Клас вклад
+public class Vklad
+{
+    public string PIBVkladnyka { get; set; } 
+    public double SumaVkladu { get; set; } 
+
+    // Конструктор
+    public Vklad(string pib, double suma)
+    {
+        if (suma < 0) 
+        {
+            throw new VkladException($"Неможливо створити вклад – вказана негативна сума вкладу: {suma}");
+        }
+
+        PIBVkladnyka = pib; 
+        SumaVkladu = suma; 
+    }
+
+    // Розрахувати суму вкладу (кількість місяців)
+    public virtual double RozrachunatySumuVkladu(int kilkistMisiatsev)
+    {
+        if (kilkistMisiatsev < 0) 
+        {
+            throw new KilkistException("Негативне значення кількості місяців.");
+        }
+        return SumaVkladu;
+    }
+}
+
+// Власний клас винятків KilkistException
+public class KilkistException : Exception
+{
+    public KilkistException() { }
+    public KilkistException(string message) : base(message) { }
+}
+
+// Власний клас винятків VkladException
+public class VkladException : Exception
+{
+    public VkladException() { }
+    public VkladException(string message) : base(message) { }
+}
+
+
+// Клас довгостроковий вклад
+public class DovhostrokovyiVklad : Vklad
+{
+    // Конструктор
+    public DovhostrokovyiVklad(string pib, double suma) : base(pib, suma) { }
+
+    // Розрахувати суму вкладу (кількість місяців)
+    public override double RozrachunatySumuVkladu(int kilkistMisiatsev)
+    {
+        if (kilkistMisiatsev < 12) 
+        {
+            throw new KilkistException("Для довгострокового вкладу мінімальний термін - 12 місяців.");
+        }
+        return base.RozrachunatySumuVkladu(kilkistMisiatsev);
+    }
+}
+
+// Клас вклад на вимогу
+public class VkladNavymogu : Vklad
+{
+    // Конструктор
+    public VkladNavymogu(string pib, double suma) : base(pib, suma) { }
+
+    // Розрахувати суму вкладу (кількість місяців)
+    public override double RozrachunatySumuVkladu(int kilkistMisiatsev)
+    {
+        
+        if (kilkistMisiatsev == 0) 
+        {
+            throw new KilkistException("Вклад на вимогу не має терміну.");
+        }
+        return base.RozrachunatySumuVkladu(kilkistMisiatsev);
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        try
+        {
+            // Приклад використання
+            Bank myBank = new Bank("MyBank"); // Створення об'єкта банку
+            Filia myFilia = new Filia("Filia1"); // Створення об'єкта філії
+
+
+            VkladNavymogu vklad = new VkladNavymogu("Іван Іванов", 100); // Створення об'єкта вкладу на вимогу
+
+            // Приклад виклику розрахунку суми вкладу
+            double suma = vklad.RozrachunatySumuVkladu(4); // Розрахунок суми вкладу на протязі 4 місяців
+            Console.WriteLine($"Сума вкладу: {suma}"); // Виведення результату
+        }
+        catch (VkladException ex) // Обробка винятку для вкладу
+        {
+            Console.WriteLine(ex.Message);
+        }
+        catch (KilkistException ex) // Обробка винятку для кількості місяців
+        {
+            Console.WriteLine(ex.Message);
+        }
+        catch (Exception ex) // Загальна обробка винятків
+        {
+            Console.WriteLine($"Помилка: {ex.Message}"); 
+        }
+
+        try
+        {
+            DovhostrokovyiVklad dovhostrokovyiVklad = new DovhostrokovyiVklad("Петро Петров", 5000); // Створення об'єкта довгострокового вкладу
+            double suma = dovhostrokovyiVklad.RozrachunatySumuVkladu(13); // Розрахунок суми вкладу на протязі 13 місяців
+            Console.WriteLine($"Сума вкладу: {suma}"); // Виведення результату
+        }
+        catch (KilkistException ex) // Обробка винятку для кількості місяців
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}
