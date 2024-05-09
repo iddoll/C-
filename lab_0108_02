@@ -1,0 +1,37 @@
+using System;
+using System.IO;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        // Читання чисел з файлу і збереження їх у масив
+        string[] lines = File.ReadAllLines("D:\\OOP_lab08_02\\f.txt");
+        double[] numbers = Array.ConvertAll(lines, double.Parse);
+
+        // 1) Найбільше значення
+        double max = numbers.Max();
+
+        // 2) Найменше значення з парними номерами
+        double minEven = numbers.Where((num, index) => index % 2 == 0).Min();
+
+        // 3) Найбільше значення модулів з непарними номерами
+        double maxAbsOdd = numbers.Where((num, index) => index % 2 != 0).Select(Math.Abs).Max();
+
+        // 4) Сума найбільшого і найменшого значень
+        double sumMaxMin = max + minEven;
+
+        // 5) Різниця першої і останньої компонент файлу
+        double first = numbers.First();
+        double last = numbers.Last();
+        double diffFirstLast = first - last;
+
+        // Виведення результатів
+        Console.WriteLine("1) Найбільше значення: " + max);
+        Console.WriteLine("2) Найменше значення з парними номерами: " + minEven);
+        Console.WriteLine("3) Найбільше значення модулів з непарними номерами: " + maxAbsOdd);
+        Console.WriteLine("4) Сума найбільшого і найменшого значень: " + sumMaxMin);
+        Console.WriteLine("5) Різниця першої і останньої компонент файлу: " + diffFirstLast);
+    }
+}
