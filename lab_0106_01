@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class CollectionType<T>
+{
+    private List<T> items;
+
+    // Конструктор
+    public CollectionType()
+    {
+        items = new List<T>();
+    }
+
+    // Метод додавання елементу
+    public void Add(T item)
+    {
+        items.Add(item);
+    }
+
+    // Метод видалення елементу
+    public bool Remove(T item)
+    {
+        return items.Remove(item);
+    }
+
+    // Індексатор
+    public T this[int index]
+    {
+        get { return items[index]; }
+        set { items[index] = value; }
+    }
+
+    // Властивість для отримання кількості елементів
+    public int Count
+    {
+        get { return items.Count; }
+    }
+
+    // Інші необхідні методи
+    // Наприклад, метод для видалення за індексом:
+    public void RemoveAt(int index)
+    {
+        items.RemoveAt(index);
+    }
+
+    // Метод для виконання LINQ-запитів
+    public IEnumerable<T> Where(Func<T, bool> predicate)
+    {
+        return items.Where(predicate);
+    }
+
+    // Метод для сортування
+    public void Sort(Comparison<T> comparison)
+    {
+        items.Sort(comparison);
+    }
+}
+
+public class TechCompany : IComparable<TechCompany>
+{
+    // Поля для характеристик компанії
+    string _Name;
+    int _NumberOfProducts;
+    double _AnnualSalesVolume;
+    double _MarketShare;
+
+    // Властивості для доступу до полів
+    public string Name
+    {
+        get { return _Name; }
+        set { _Name = value; }
+    }
+
+    public int NumberOfProducts
+    {
+        get { return _NumberOfProducts; }
+        set { _NumberOfProducts = value; }
+    }
+
+    public double AnnualSalesVolume
+    {
+        get { return _AnnualSalesVolume; }
+        set { _AnnualSalesVolume = value; }
+    }
+
+    public double MarketShare
+    {
+        get { return _MarketShare; }
+        set { _MarketShare = value; }
+    }
+
+    // Конструктор класу, що ініціалізує характеристики компанії
+    public TechCompany(string name, int numberOfProducts, double annualSalesVolume, double marketShare)
+    {
+        Name = name;
+        NumberOfProducts = numberOfProducts;
+        AnnualSalesVolume = annualSalesVolume;
+        MarketShare = marketShare;
+    }
+
+    // Перевизначений метод ToString для виведення інформації про компанію
+    public override string ToString()
+    {
+        return $"{Name}. Number of products: {NumberOfProducts}. Annual sales volume: {AnnualSalesVolume}. Market share: {MarketShare}%.";
+    }
+
+    // Реалізація інтерфейсу IComparable<TechCompany>
+    public int CompareTo(TechCompany other)
+    {
+        // Порівнюємо за назвою компанії
+        return string.Compare(this.Name, other.Name);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        CollectionType<TechCompany> companies = new CollectionType<TechCompany>();
+
+        TechCompany oracle = new TechCompany("Oracle", 1, 2500000000, 31.01);
+        TechCompany ibm = new TechCompany("IBM", 3, 2400000000, 29.25);
+        TechCompany microsoft = new TechCompany("Microsoft", 2, 1000000000, 13.01);
+
+        companies.Add(oracle);
+        companies.Add(ibm);
+        companies.Add(microsoft);
+
+        // Використання LINQ-запитів
+        var query = companies.Where(company => company.AnnualSalesVolume > 2000000000)
+                             .OrderByDescending(company => company.MarketShare);
+
+        foreach (var company in query)
+        {
+            Console.WriteLine(company.ToString());
+        }
+
+        Console.ReadLine();
+    }
+}
