@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створення трьох словників (колекцій) з ключами string та значеннями int.
+        Dictionary<string, int> dict1 = new Dictionary<string, int>();
+        dict1.Add("a", 1);
+        dict1.Add("b", 2);
+        dict1.Add("c", -5);
+
+        Dictionary<string, int> dict2 = new Dictionary<string, int>();
+        dict2.Add("x", -4);
+        dict2.Add("y", 5);
+
+        Dictionary<string, int> dict3 = new Dictionary<string, int>();
+        dict3.Add("m", -5);
+        dict3.Add("n", -7);
+        dict3.Add("o", -8);
+        dict3.Add("p", 9);
+
+        // Створення масиву об'єктів CollectionType та їх ініціалізація з вищезгаданими словниками.
+        CollectionType<string, int>[] collections = new CollectionType<string, int>[3];
+        collections[0] = new CollectionType<string, int>(dict1);
+        collections[1] = new CollectionType<string, int>(dict2);
+        collections[2] = new CollectionType<string, int>(dict3);
+
+        // ПІДРАХУНОК КІЛЬКОСТІ КОЛЕКЦІЙ З НЕГАТИВНИМИ ЕЛЕМЕНТАМИ
+        int negativeValue = -5;
+        int count = 0;
+        // Перевіряємо кожну колекцію на наявність негативних елементів
+        for (int i = 0; i < collections.Length; i++)
+            if (collections[i].ContainsNegativeValue())
+                count++;
+
+        // Виводимо кількість колекцій з негативними елементами
+        Console.WriteLine("Кількість колекцій з негативними елементами: " + count);
+
+        // ПОШУК МІНІМАЛЬНОЇ ТА МАКСИМАЛЬНОЇ КОЛЕКЦІЇ З ЗАДАНИМ ЕЛЕМЕНТОМ
+        CollectionType<string, int> minCollection = GetMinCollectionWithElement(collections, negativeValue);
+        CollectionType<string, int> maxCollection = GetMaxCollectionWithElement(collections, negativeValue);
+
+        // Виводимо назви колекцій, якщо вони були знайдені
+        Console.WriteLine("Мінімальна колекція з елементом " + negativeValue + ": " + string.Join(", ", minCollection.Collection.Keys));
+        Console.WriteLine("Максимальна колекція з елементом " + negativeValue + ": " + string.Join(", ", maxCollection.Collection.Keys));
+    }
+
+    // МЕТОД ДЛЯ ЗНАХОДЖЕННЯ МІНІМАЛЬНОЇ КОЛЕКЦІЇ З ЗАДАНИМ ЕЛЕМЕНТОМ
+    static CollectionType<K, V> GetMinCollectionWithElement<K, V>(CollectionType<K, V>[] collections, V element)
+    {
+        return collections.Where(col => col.ContainsElement(element)).OrderBy(col => col.Collection.Count).FirstOrDefault();
+    }
+
+    // МЕТОД ДЛЯ ЗНАХОДЖЕННЯ МАКСИМАЛЬНОЇ КОЛЕКЦІЇ З ЗАДАНИМ ЕЛЕМЕНТОМ
+    static CollectionType<K, V> GetMaxCollectionWithElement<K, V>(CollectionType<K, V>[] collections, V element)
+    {
+        return collections.Where(col => col.ContainsElement(element)).OrderByDescending(col => col.Collection.Count).FirstOrDefault();
+    }
+}
+
+// КЛАС, ЩО ПРЕДСТАВЛЯЄ ЗБЕРЕЖЕНУ КОЛЕКЦІЮ, І МАЄ ДОПОМІЖНІ МЕТОДИ
+class CollectionType<K, V>
+{
+    public Dictionary<K, V> Collection { get; }
+
+    public CollectionType(Dictionary<K, V> collection)
+    {
+        Collection = collection;
+    }
+
+    // ПЕРЕВІРКА НАЯВНОСТІ ЗАДАНОГО ЕЛЕМЕНТУ В КОЛЕКЦІЇ
+    public bool ContainsElement(V element)
+    {
+        return Collection.ContainsValue(element);
+    }
+
+    // ПЕРЕВІРКА НАЯВНОСТІ НЕГАТИВНИХ ЗНАЧЕНЬ У КОЛЕКЦІЇ
+    public bool ContainsNegativeValue()
+    {
+        return Collection.Any(pair => Comparer<V>.Default.Compare(pair.Value, default(V)) < 0);
+    }
+}
