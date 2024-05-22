@@ -1,0 +1,24 @@
+Public Class Form1
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        CheckedListBox1.Items.Add("Пункт 1")
+        CheckedListBox1.Items.Add("Пункт 2")
+        CheckedListBox1.Items.Add("Пункт 3")
+
+        AddHandler CheckedListBox1.ItemCheck, AddressOf CheckedListBox_ItemCheck
+    End Sub
+
+    Private Sub CheckedListBox_ItemCheck(sender As Object, e As ItemCheckEventArgs)
+        Dim checkedCount As Integer = 0
+        For Each index As Integer In CheckedListBox1.CheckedIndices
+            checkedCount += 1
+        Next
+
+        If e.NewValue = CheckState.Checked Then
+            checkedCount += 1
+        Else
+            checkedCount -= 1
+        End If
+
+        Me.Text = "Кількість вибраних пунктів: " & checkedCount.ToString()
+    End Sub
+End Class
