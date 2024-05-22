@@ -1,0 +1,40 @@
+using System;
+
+public delegate double Function(double x);
+
+public class IntegralCalculator
+{
+    // Метод для обчислення визначеного інтегралу за формулою лівих прямокутників
+    public double Calculate(Function f, double a, double b, int n)
+    {
+        double h = (b - a) / n;  // Крок розбиття
+        double sum = 0.0;
+
+        for (int i = 0; i < n; i++)
+        {
+            double x = a + i * h;
+            sum += f(x);
+        }
+
+        return h * sum;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        IntegralCalculator calculator = new IntegralCalculator();
+
+        // Приклад використання: обчислення інтегралу функції f(x) = x^2 на інтервалі [0, 1]
+        Function f = x => x * x;
+
+        double a = 0.0;
+        double b = 1.0;
+        int n = 1000;  // Кількість підінтервалів
+
+        double result = calculator.Calculate(f, a, b, n);
+
+        Console.WriteLine($"Інтеграл від {a} до {b} дорівнює {result}");
+    }
+}
