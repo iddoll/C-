@@ -57,7 +57,7 @@ class Program
 {
     static void Main()
     {
-        PhotoStudio studio1 = new PhotoStudio
+        PhotoStudio photostudio1 = new PhotoStudio
         {
             Type = "Тип1",
             Vurobnuk = "Виробник1",
@@ -67,7 +67,7 @@ class Program
             Sensitiv = 300
         };
 
-        PhotoStudio studio2 = new PhotoStudio
+        PhotoStudio photostudio2 = new PhotoStudio
         {
             Type = "Тип2",
             Vurobnuk = "Виробник2",
@@ -78,15 +78,15 @@ class Program
         };
 
         Console.WriteLine("Деталi першоi студii:");
-        studio1.PrintLampDetails();
-        studio1.PrintCameraDetails();
+        photostudio1.PrintLampDetails();
+        photostudio1.PrintCameraDetails();
 
         Console.WriteLine("\nДеталi другоi студii:");
-        studio2.PrintLampDetails();
-        studio2.PrintCameraDetails();
+        photostudio2.PrintLampDetails();
+        photostudio2.PrintCameraDetails();
 
-        studio1.ChangeSensitiv(600);
+        photostudio1.ChangeSensitiv(600);
         Console.WriteLine("\nЗмiненi деталi першоi студii:");
-        studio1.PrintCameraDetails();
+        photostudio1.PrintCameraDetails();
     }
 }
