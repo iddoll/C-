@@ -1,0 +1,92 @@
+using System;
+
+public interface Lamp
+{
+    string Type { get; set; }
+    string Vurobnuk { get; set; }
+    int Potyzhnist { get; set; }
+    string ElementType { get; set; }
+    int ElementCount { get; set; }
+
+    void PrintLampDetails();
+    void ChangePotyzhnist(int newPotyzhnist);
+}
+
+public interface Camera
+{
+    string Type { get; set; }
+    string Vurobnuk { get; set; }
+    int Sensitiv { get; set; }
+
+    void PrintCameraDetails();
+    void ChangeSensitiv(int newSensitiv);
+}
+
+public class PhotoStudio : Lamp, Camera
+{
+    public string Type { get; set; }
+    public string Vurobnuk { get; set; }
+    public int Potyzhnist { get; set; }
+    public string ElementType { get; set; }
+    public int ElementCount { get; set; }
+
+    public int Sensitiv{ get; set; }
+
+    public void PrintLampDetails()
+    {
+        Console.WriteLine($"Тип лампи: {Type}, виробник: {Vurobnuk}, потужнiсть у люменах: {Potyzhnist}, тип елементiв: {ElementType}, кiлькість елементiв: {ElementCount}");
+    }
+
+    public void ChangePotyzhnist(int newPotyzhnist)
+    {
+        Potyzhnist = newPotyzhnist;
+    }
+
+    public void PrintCameraDetails()
+    {
+        Console.WriteLine($"Тип камери {Type}, виробник: {Vurobnuk}, свiтлочутливiсть оптичного об'єктиву: {Sensitiv}");
+    }
+
+    public void ChangeSensitiv(int newSensitiv)
+    {
+        Sensitiv = newSensitiv;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        PhotoStudio studio1 = new PhotoStudio
+        {
+            Type = "Тип1",
+            Vurobnuk = "Виробник1",
+            Potyzhnist = 1000,
+            ElementType = "ТипЕлементу1",
+            ElementCount = 10,
+            Sensitiv = 300
+        };
+
+        PhotoStudio studio2 = new PhotoStudio
+        {
+            Type = "Тип2",
+            Vurobnuk = "Виробник2",
+            Potyzhnist = 1500,
+            ElementType = "ТипЕлементу2",
+            ElementCount = 5,
+            Sensitiv = 600
+        };
+
+        Console.WriteLine("Деталi першоi студii:");
+        studio1.PrintLampDetails();
+        studio1.PrintCameraDetails();
+
+        Console.WriteLine("\nДеталi другоi студii:");
+        studio2.PrintLampDetails();
+        studio2.PrintCameraDetails();
+
+        studio1.ChangeSensitiv(600);
+        Console.WriteLine("\nЗмiненi деталi першоi студii:");
+        studio1.PrintCameraDetails();
+    }
+}
